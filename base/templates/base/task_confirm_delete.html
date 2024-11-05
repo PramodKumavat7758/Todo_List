@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Todo</title>
+
+    <!-- Optional: Link Bootstrap for additional styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        /* General Styles */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .delete-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #dc3545; /* Red color for delete confirmation */
+            margin-bottom: 20px;
+        }
+
+        /* Button Styles */
+        input[type="submit"] {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        /* Link Styles */
+        .back-link {
+            margin-top: 15px;
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="delete-container">
+    <h1>Confirm Deletion</h1>
+    <a href="{% url 'tasks' %}" class="back-link">Back to Tasks</a>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Please confirm before deleting the task: "{{ task }}"</p>
+        <input type="submit" value="Delete">
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TO DO List</title>
+
+    <!-- Optional: Link Bootstrap for additional styling
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+-->
+    <style>
+        /* General Styles */
+        body {
+            background-color: #e9ecef;
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            text-align: center;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        td {
+            background-color: #f8f9fa;
+        }
+
+        /* Link and Button Styles */
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        input[type="submit"], .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input[type="submit"]:hover, .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Form Styles */
+        .form-inline {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    {% block content %}
+
+    <!-- Authentication Section -->
+    {% if request.user.is_authenticated %}
+        <p>Welcome, {{ request.user }}</p>
+
+        <form action="{% url 'logout' %}" method="POST" class="form-inline">
+            {% csrf_token %}
+            <input type="submit" value="Logout">
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    {% endif %}
+
+    <!-- Page Title -->
+    <h1>My To-Do List</h1>
+
+    <!-- Create Task Button -->
+    <div class="text-right mb-3">
+
+
+    </div>
+
+    <!-- Search Form -->
+    <form method="GET" class="form-inline">
+        <a href="{% url 'create-task' %}" class="btn btn-success">Create Task</a>
+        <input type="text" name="search" value="{{ search_input }}" class="form-control" placeholder="Search tasks...">
+        <input type="submit" value="Search" class="btn btn-primary">
+    </form>
+
+    <!-- Task List Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>
+                        <a href="{% url 'update-task' task.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete-task' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2" class="text-center">No items found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock content %}
+</div>
+</body>
+</html>
