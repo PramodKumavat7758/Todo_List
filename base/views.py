@@ -32,10 +32,10 @@ class TaskList(LoginRequiredMixin, ListView):
         context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
 
-        search_input = self.request.GET.get('search') or ''
+        search_input = self.request.GET.get('search') or '*'
         if search_input:
             context['tasks'] = context['tasks'].filter(
-                title__startswith=search_input)
+                title__startsWith=search_input)
 
         context['search_input'] = search_input
         return context
@@ -49,13 +49,13 @@ class TaskDetail(LoginRequiredMixin,DetailView):
 
 
 
-class TaskCreate(LoginRequiredMixin,CreateView):
+class TaskCreate(LoginRequiredmixin,CreateView):
     model = Task
   # Here you can define your own choice of fields from model test
-   # field =['title', 'description','']
+    field =['title', 'description','']
 
     # Here you can add all the present fields to view
-   # fields='__all__'
+    fields='__all__'
     fields=['title','description','complete']
     success_url = reverse_lazy('tasks')
 
@@ -78,7 +78,7 @@ class DeleteTask (LoginRequiredMixin,DeleteView):
 
 class UserLogin(LoginView):
 
-    template_name = 'base/login.html'
+    template_name = 'base/login.html',
     fields = "__all__"
     redirect_authenticated_user = True
 
